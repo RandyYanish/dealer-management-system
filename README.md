@@ -73,6 +73,40 @@ pnpm i
 <details>
 <summary>1.0.1 - March 1st, 2024</summary>
 <pre>In Development.</pre>
+
+- Created Models: 
+  ```
+   - User
+   - Dealership
+   - Vehicle
+  ```
+- Created schemas: 
+  ```
+   - resolvers
+   - typeDefs
+  ```
+  - Queries:
+    ```
+     - getAllUsers
+     - getUser
+     - getDealershipById
+     - getDealershipByUser
+     - getAllDealerships
+     - getAllVehiclesByDealership
+     - authUser
+    ```
+    - Mutations:
+    ```
+     - createUser
+     - loginUser
+     - deleteUser
+     - addVehicle
+     - updateVehicle
+     - deleteVehicle
+     - createDealership
+     - updateDealership
+     - deleteDealership
+    ```
 </details>
 <br>
 

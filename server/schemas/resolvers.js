@@ -142,6 +142,18 @@ const resolvers = {
     deleteVehicle: async (_, { vehicleId }) => {
       return await Vehicle.findByIdAndDelete(vehicleId);
     },
+    // POST create dealership
+    createDealership: async (_, { dealershipInput }) => {
+      // TODO: finish coding POST route
+    },
+    // PUT update dealership
+    updateDealership: async (_, { dealershipInput }) => {
+      // TODO: finish coding POST route
+    },
+    // DELETE dealership
+    deleteDealership: async (_, { dealershipId }) => {
+      return await Dealership.findByIdAndDelete(dealershipId);
+    }
   }
 }
 
