@@ -71,13 +71,13 @@ pnpm i
 ## Version History
 
 <details>
-<summary>0.1.1 - February 1st, 2024</summary>
+<summary>1.0.1 - March 1st, 2024</summary>
 <pre>In Development.</pre>
 </details>
 <br>
 
 <details>
-<summary>Alpha 0.1.0 - February 27th, 2024</summary>
+<summary>1.0.0 - February 27th, 2024</summary>
 <pre>Major Implementation and Setup</pre>
 
 - Install and implementation.
