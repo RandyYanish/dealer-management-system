@@ -1,12 +1,12 @@
 const { Schema, model } = require('mongoose');
 
-const dealerSchema = new Schema({
-  user_id: {
+const dealershipSchema = new Schema({
+  user_id: [{
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'User',
-  },
-  dealer_name: {
+  }],
+  dealership_name: {
     type: String,
     require: true,
   },
@@ -17,11 +17,12 @@ const dealerSchema = new Schema({
         const addressPattern = /^[a-zA-z0-9\s,'-]*$/;
         return addressPattern.test(v);
       },
-    message: (props) => `${props.value} is not a valid address!`,
+      message: (props) => `${props.value} is not a valid address!`,
     },
   },
+  vehicles: [{ type: Schema.Types.ObjectId, ref: 'Vehicle' }],
 });
 
-const Dealer = model('Dealer', dealerSchema);
+const Dealership = model('Dealership', dealershipSchema);
 
-module.exports = Dealer;
+module.exports = Dealership;

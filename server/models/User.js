@@ -1,12 +1,13 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
-const Business = require("./Business");
+const Dealership = require("./Dealership");
 
 const userSchema = new Schema({
-  first_time_log: {
-    type: Boolean,
-    required: true,
-    default: true,
+  first_name: {
+    type: String,
+  },
+  last_name: {
+    type: String,
   },
   email: {
     type: String,
@@ -22,12 +23,9 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minlength: 5,
+    minlength: 8,
   },
-  dealer: {
-    type: Boolean,
-    default: false,
-  },
+  dealerships: [{ type: Schema.Types.ObjectId, ref: 'Dealership'}]
 });
 
 // Set up pre-save middleware to create password
@@ -39,13 +37,12 @@ userSchema.pre("save", async function (next) {
   let userInput = this.userInput || {};
 
   if (userInput.newDealerUser) {
-    let newBusiness = new Business({
+    let newDealership = new Dealership({
       user_id: this._id,
-      business_name: userInput.business_name,
-      description: userInput.description,
+      dealership_name: userInput.dealership_name,
       address: userInput.address,
     });
-    await newBusiness.save();
+    await newDealership.save();
   } else {
     delete this.userInput;
   }
