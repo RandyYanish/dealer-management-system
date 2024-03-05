@@ -2,13 +2,13 @@
 import dotenv from 'dotenv';
 import express, { urlencoded, json } from 'express'; 
 import { ApolloServer } from 'apollo-server-express';
-import { authMiddleware } from './utils/auth.js';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import cors from 'cors';
 import http from 'http';
 
 // Files
 import { typeDefs, resolvers } from './schemas/index.js';
+import { authMiddleware } from './utils/auth.js';
 import './config/connection.js';
 
 dotenv.config();
@@ -16,6 +16,8 @@ dotenv.config();
 // Initialize Back
 const PORT = process.env.PORT || 3001;
 const app = express();
+const httpServer = http.createServer(app);
+
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 const server = new ApolloServer({
   schema,
@@ -25,13 +27,7 @@ const server = new ApolloServer({
 // Initialize Front
 app.use(urlencoded({ extended: false }));
 app.use(json());
-app.use(
-  cors({
-    origin: '*',
-  })
-);
-
-const httpServer = http.createServer(app);
+app.use(cors({ origin: '*' }));
 
 // Create new instance of an Apollo Server with the GraphQL schema
 const startApolloServer = async (typeDefs, resolvers) => {

@@ -1,4 +1,5 @@
 import { User, Dealership, Vehicle } from '../models/index.js';
+import { signToken, authToken } from '../utils/auth.js';
 
 const resolvers = {
   Query: {
