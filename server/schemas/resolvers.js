@@ -32,14 +32,13 @@ const resolvers = {
     getAllVehiclesByDealership: async (_, { dealershipId }) => {
       return await Vehicle({ dealership_id: dealershipId });
     },
-    authUser: async (_, { token }) => {
+    authUser: async (_, { token }, { secret, expiration }) => {
       try {
-        let decodedToken = authToken(token);
+        let decodedToken = authToken(token, secret, expiration);
         console.log({ decodedToken });
         if (!decodedToken) {
           return { authed: false, userId: null };
         }
-        console.log({ decodedToken });
         return { authed: true, userId: decodedToken.data._id };
       } catch (error) {
         throw new Error(`Auth failed: ${error}`);
@@ -49,7 +48,7 @@ const resolvers = {
 
   Mutation: {
     // POST new user
-    createUser: async (_, { userInput }) => {
+    createUser: async (_, { userInput }, { secret, expiration }) => {
       try {
         const foundUser = await User.findOne({ email: userInput.email });
         if (foundUser) {
@@ -60,7 +59,7 @@ const resolvers = {
         user.userInput = userInput;
         await user.save();
         if (user) {
-          token = signToken(user);
+          token = signToken(user, secret, expiration);
         }
         return token;
       } catch (error) {
@@ -79,8 +78,8 @@ const resolvers = {
         if (!passwordAuthed) {
           throw new Error({ message: 'Incorrect password.' })
         }
-        const token = signToken(user, secret, expiration);
-        return { user, token: token.token};
+        const { token } = signToken(user, secret, expiration);
+        return { token, user };
       } catch (error) {
         throw new Error(error)
       }

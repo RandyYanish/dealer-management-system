@@ -45,7 +45,7 @@ const typeDefs = gql`
   }
 
   type Auth {
-    token: ID!
+    token: String!
     user: User
   }
 
@@ -55,7 +55,7 @@ const typeDefs = gql`
 
   type AuthUser {
     authed: Boolean!
-    userId: ID!
+    userId: ID
   }
 
   input DealershipInput {
@@ -107,7 +107,7 @@ const typeDefs = gql`
     getDealershipByUser(userId: ID!): Dealership
     getAllDealerships: [Dealership]
     getAllVehiclesByDealership(dealershipId: ID!): [Vehicle]
-    authUser(token: Token): AuthUser
+    authUser(token: String!): AuthUser!
   }
 
   type Mutation {

@@ -30,19 +30,18 @@ export function authMiddleware({ req }) {
 // signToken function
 export function signToken({ email, _id }, secret, expiration) {
   const payload = { email, _id };
-
+  console.log(payload)
   return {
     token: sign({ data: payload }, secret, { expiresIn: expiration }),
   };
 }
 
 // authToken function
-export function authToken(token) {
+export function authToken(token, secret, expiration) {
   try {
-    let authed = verify(token, secret, { maxAge: process.env.JWT_EXPIRATION });
-    if (authed) {
-      let decoded = decode(token);
-
+    // Verify token
+    let decoded = verify(token, secret, { maxAge: expiration });
+    if (decoded) {
       return decoded;
     }
   } catch (error) {
