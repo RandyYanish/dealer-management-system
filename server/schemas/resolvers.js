@@ -69,8 +69,7 @@ const resolvers = {
       }
     },
     // POST login user
-    // TODO: Add token to user, fix issues returning: ReferenceError: secret is not defined
-    loginUser: async (_, { email, password }) => {
+    loginUser: async (_, { email, password }, { secret, expiration }) => {
       try {
         const user = await User.findOne({ email });
         if (!user) {
@@ -81,7 +80,7 @@ const resolvers = {
           throw new Error({ message: 'Incorrect password.' })
         }
         const token = signToken(user, secret, expiration);
-        return token;
+        return { user, token: token.token};
       } catch (error) {
         throw new Error(error)
       }

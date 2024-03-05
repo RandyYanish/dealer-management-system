@@ -19,9 +19,13 @@ const app = express();
 const httpServer = http.createServer(app);
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
-const server = new ApolloServer({
+const server = new ApolloServer ({
   schema,
-  context: authMiddleware,
+  context: ({ req }) => ({
+    secret: process.env.JWT_SECRET,
+    expiration: process.env.JWT_EXPIRATION,
+    authMiddleware: authMiddleware({ req }),
+  }),
 });
 
 // Initialize Front
