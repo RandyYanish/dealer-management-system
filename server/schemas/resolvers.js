@@ -1,4 +1,4 @@
-import { User, Dealership, Vehicle } from '../models';
+import { User, Dealership, Vehicle } from '../models/index.js';
 
 const resolvers = {
   Query: {
@@ -8,7 +8,7 @@ const resolvers = {
       return allUsers;
     },
     // GET user by ID
-    getUser: async (_, { userId }) => {
+    getUserById: async (_, { userId }) => {
       const userById = await User.findById(userId);
       return userById;
     },
@@ -64,7 +64,7 @@ const resolvers = {
         return token;
       } catch (error) {
         let err = error.message || 'Error creating a user';
-        throw new Error(error)
+        throw new Error(err)
       }
     },
     // POST login user
@@ -144,11 +144,29 @@ const resolvers = {
     },
     // POST create dealership
     createDealership: async (_, { dealershipInput }) => {
-      // TODO: finish coding POST route
+      try {
+        const dealership = new Dealership(dealershipInput);
+        await dealership.save();
+        return dealership;
+      } catch (error) {
+        throw new Error(error);
+      }
     },
     // PUT update dealership
     updateDealership: async (_, { dealershipInput }) => {
-      // TODO: finish coding POST route
+      const { _id, user_id, dealership_name, address, vehicles } = dealershipInput;
+      try {
+        let foundDealership = await Dealership.findByIdAndUpdate(_id, {
+          user_id,
+          dealership_name,
+          address,
+          vehicles
+        });
+        await foundDealership.save();
+        return foundDealership;
+      } catch (error) {
+        throw new Error(error);
+      }
     },
     // DELETE dealership
     deleteDealership: async (_, { dealershipId }) => {
@@ -157,4 +175,4 @@ const resolvers = {
   }
 }
 
-module.exports = resolvers;
+export default resolvers;

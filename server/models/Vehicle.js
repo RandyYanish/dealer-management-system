@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 const vehicleSchema = new Schema({
   vin: {
@@ -31,4 +31,4 @@ const vehicleSchema = new Schema({
 
 const Vehicle = model('Vehicle', vehicleSchema);
 
-module.exports = Vehicle;
+export default Vehicle;

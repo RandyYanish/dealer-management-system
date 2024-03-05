@@ -1,12 +1,13 @@
 {
   "name": "dms-server",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.ts",
+    "start": "node server.js",
     "watch": "nodemon",
-    "seed": "node config/seeds.ts"
+    "seed": "node config/seeds.js"
   },
   "author": "Randall Taylor",
   "license": "MIT",

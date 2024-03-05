@@ -1,5 +1,5 @@
-const User = require('./User');
-const Dealership = require('./Dealership');
-const Vehicle = require('./Vehicle');
+import User from './User.js';
+import Dealership from './Dealership.js';
+import Vehicle from './Vehicle.js';
 
-module.exports = { User, Dealership, Vehicle };
+export { User, Dealership, Vehicle };

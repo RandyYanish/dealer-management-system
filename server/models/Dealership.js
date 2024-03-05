@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 const dealershipSchema = new Schema({
   user_id: [{
@@ -25,4 +25,4 @@ const dealershipSchema = new Schema({
 
 const Dealership = model('Dealership', dealershipSchema);
 
-module.exports = Dealership;
+export default Dealership;
