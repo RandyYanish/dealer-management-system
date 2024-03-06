@@ -1,5 +1,5 @@
 import pkg from 'jsonwebtoken';
-const { sign, verify, decode } = pkg;
+const { sign, verify } = pkg;
 
 // Set the secret and expiration date variables in the .env file
 const secret = process.env.JWT_SECRET;
@@ -30,7 +30,6 @@ export function authMiddleware({ req }) {
 // signToken function
 export function signToken({ email, _id }, secret, expiration) {
   const payload = { email, _id };
-  console.log(payload)
   return {
     token: sign({ data: payload }, secret, { expiresIn: expiration }),
   };

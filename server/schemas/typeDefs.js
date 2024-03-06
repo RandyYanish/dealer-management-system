@@ -103,18 +103,18 @@ const typeDefs = gql`
   type Query {
     getAllUsers: [User]
     getUserById(userId: ID!): User
+    authUser(token: String!): AuthUser!
     getDealershipById(dealershipId: ID!): Dealership
     getDealershipByUser(userId: ID!): Dealership
     getAllDealerships: [Dealership]
-    getAllVehiclesByDealership(dealershipId: ID!): [Vehicle]
-    authUser(token: String!): AuthUser!
+    getAllVehiclesByDealershipId(dealershipId: ID!): [Vehicle]
   }
 
   type Mutation {
     createUser(userInput: UserInput): Auth
     loginUser(email: String!, password: String!): Auth
     deleteUser(userId: ID!): User
-    addVehicle(vehicleInput: VehicleInput): Vehicle
+    createVehicle(vehicleInput: VehicleInput): Vehicle
     updateVehicle(vehicleInput: VehicleInput): Vehicle
     deleteVehicle(vehicleId: ID!): Vehicle
     createDealership(dealershipInput: DealershipInput): Dealership

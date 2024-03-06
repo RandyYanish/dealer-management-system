@@ -88,12 +88,12 @@ pnpm i
   - Queries:
     ```
      - getAllUsers
-     - getUser
+     - getUserById
+     - authUser
      - getDealershipById
      - getDealershipByUser
      - getAllDealerships
-     - getAllVehiclesByDealership
-     - authUser
+     - getAllVehiclesByDealershipId
     ```
     - Mutations:
     ```

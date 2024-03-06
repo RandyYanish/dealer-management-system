@@ -13,6 +13,19 @@ const resolvers = {
       const userById = await User.findById(userId);
       return userById;
     },
+    // GET verify user by token
+    authUser: async (_, { token }, { secret, expiration }) => {
+      try {
+        let decodedToken = authToken(token, secret, expiration);
+        console.log({ decodedToken });
+        if (!decodedToken) {
+          return { authed: false, userId: null };
+        }
+        return { authed: true, userId: decodedToken.data._id };
+      } catch (error) {
+        throw new Error(`Auth failed: ${error}`);
+      }
+    },
     // GET dealership by ID
     getDealershipById: async (_, { dealershipId }) => {
       const dealershipById = await Dealership.findById(dealershipId);
@@ -29,20 +42,8 @@ const resolvers = {
       return allDealerships;
     },
     // GET vehicles by dealership
-    getAllVehiclesByDealership: async (_, { dealershipId }) => {
+    getAllVehiclesByDealershipId: async (_, { dealershipId }) => {
       return await Vehicle({ dealership_id: dealershipId });
-    },
-    authUser: async (_, { token }, { secret, expiration }) => {
-      try {
-        let decodedToken = authToken(token, secret, expiration);
-        console.log({ decodedToken });
-        if (!decodedToken) {
-          return { authed: false, userId: null };
-        }
-        return { authed: true, userId: decodedToken.data._id };
-      } catch (error) {
-        throw new Error(`Auth failed: ${error}`);
-      }
     },
   },
 
@@ -55,13 +56,12 @@ const resolvers = {
           throw new Error('User already exists');
         }
         const user = new User(userInput);
-        let token;
-        user.userInput = userInput;
         await user.save();
-        if (user) {
-          token = signToken(user, secret, expiration);
+        if (!user) {
+          throw new Error({ message: 'Error creating a user' });
         }
-        return token;
+        const { token } = signToken(user, secret, expiration);
+        return { token, user };
       } catch (error) {
         let err = error.message || 'Error creating a user';
         throw new Error(err)
@@ -89,7 +89,7 @@ const resolvers = {
       return await User.findByIdAndDelete(userId);
     },
     // POST create vehicle
-    addVehicle: async (_, { vehicleInput }) => {
+    createVehicle: async (_, { vehicleInput }) => {
       try {
         const vehicle = new Vehicle(vehicleInput);
         const dealership = await Dealership.findById(vehicleInput.dealership_id);
@@ -147,6 +147,7 @@ const resolvers = {
       try {
         const dealership = new Dealership(dealershipInput);
         await dealership.save();
+        await User.findByIdAndUpdate(dealershipInput.user_id, { $push: { dealerships: dealership._id } });
         return dealership;
       } catch (error) {
         throw new Error(error);
